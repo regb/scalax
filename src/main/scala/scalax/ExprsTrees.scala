@@ -31,6 +31,6 @@ object ExprsTrees {
     }
   }
   
-  implicit object BigIntExprs extends MonoidExprsTrees[BigInt]
+  implicit object LinearIntegerArithmeticExprsTrees extends MonoidExprsTrees[BigInt]
 
 }
