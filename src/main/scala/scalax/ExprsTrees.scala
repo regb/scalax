@@ -31,6 +31,9 @@ object ExprsTrees {
     }
   }
   
-  implicit object LinearIntegerArithmeticExprsTrees extends MonoidExprsTrees[BigInt]
+  implicit object LinearIntegerArithmeticExprsTrees extends MonoidExprsTrees[BigInt] {
+    case class LessThan(e1: Expr, e2: Expr) extends Expr
+    case class Equals(e1: Expr, e2: Expr) extends Expr
+  }
 
 }

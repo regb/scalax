@@ -6,7 +6,7 @@ trait Solver[T] {
 
   val exprsTrees: ExprsTrees[T]
 
-  def solveForSatisfiability(expr: exprsTrees.Expr): Map[exprsTrees.Var, exprsTrees.Const]
+  def solveForSatisfiability(expr: exprsTrees.Expr): Option[Map[exprsTrees.Var, exprsTrees.Const]]
 
 }
 

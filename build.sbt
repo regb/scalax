@@ -10,7 +10,7 @@ lazy val root = (project in file(".")).
   dependsOn(scalaSmtLib)
 
 lazy val scalaSmtLib = {
-  val commit = "b902375db875771edc28f5a456bddc841317bf7b"
+  val commit = "580de97246a4a6e5158841f932eb263d11b49d57"
   val githubLink = s"git://github.com/regb/scala-smtlib.git#$commit"
   RootProject(uri(githubLink))
 }
