@@ -1,16 +1,11 @@
 lazy val root = (project in file(".")).
   settings(
-    name := "Scalax",
+    organization := "com.regblanc",
+    name := "scalax",
     version := "0.01",
-    scalaVersion := "2.11.5",
+    scalaVersion := "2.11.7",
     scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
 
+    libraryDependencies += "com.regblanc" %% "scala-smtlib" % "0.2",
     libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.1" % Test
-  ).
-  dependsOn(scalaSmtLib)
-
-lazy val scalaSmtLib = {
-  val commit = "580de97246a4a6e5158841f932eb263d11b49d57"
-  val githubLink = s"git://github.com/regb/scala-smtlib.git#$commit"
-  RootProject(uri(githubLink))
-}
+  )

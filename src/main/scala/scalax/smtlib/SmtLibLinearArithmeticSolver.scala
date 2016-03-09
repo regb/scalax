@@ -13,7 +13,7 @@ object SmtLibLinearArithmeticSolver extends LinearArithmeticSolver {
 
 
   def solveForSatisfiability(expr: Expr): Option[Map[Var, Const]] = {
-    val interpreter = new Z3InterpreterV3
+    val interpreter = Z3Interpreter.buildForV3
     val vars: Set[Var] = Set(Var("x"), Var("y"), Var("z"))
     val declareVars: Set[DeclareFun] = vars.map(v => DeclareFun(SSymbol(v.id), Seq(), Ints.IntSort()))
 
@@ -21,17 +21,17 @@ object SmtLibLinearArithmeticSolver extends LinearArithmeticSolver {
 
     interpreter.eval(Assert(toTerm(expr)))
     interpreter.eval(CheckSat()) match {
-      case CheckSatResponse(SatStatus) => {
+      case CheckSatStatus(SatStatus) => {
         println("was sat")
-        val model = interpreter.eval(GetModel()).asInstanceOf[GetModelResponse]
+        val model = interpreter.eval(GetModel()).asInstanceOf[GetModelResponseSuccess]
         println("model was: " + model)
         Some(fromModel(model))
       }
-      case CheckSatResponse(UnsatStatus) => {
+      case CheckSatStatus(UnsatStatus) => {
         println("was unsat")
         None
       }
-      case CheckSatResponse(UnknownStatus) => None
+      case CheckSatStatus(UnknownStatus) => None
       case res => sys.error("unexpected response from solver: " + res)
     }
   }
@@ -54,9 +54,9 @@ object SmtLibLinearArithmeticSolver extends LinearArithmeticSolver {
     case Ints.Neg(Ints.NumeralLit(n)) => Const(-n)
   }
 
-  def fromModel(model: GetModelResponse): Map[Var, Const] = {
+  def fromModel(model: GetModelResponseSuccess): Map[Var, Const] = {
     model.model.map {
-      case DefineFun(SSymbol(name), Seq(), sort, body) => (Var(name) -> fromTerm(body))
+      case DefineFun(FunDef(SSymbol(name), Seq(), sort, body)) => (Var(name) -> fromTerm(body))
     }.toMap
   }
 
